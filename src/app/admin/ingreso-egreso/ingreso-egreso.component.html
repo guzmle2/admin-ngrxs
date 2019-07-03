@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Agregar Ingreso / Egreso</h4>
+        <p class="card-description">
+          Especifique el monto y el tipo
+        </p>
+
+        <form (ngSubmit)="onSubmit()" [formGroup]="form">
+
+          <div class="form-group">
+            <label>Descripción</label>
+            <input type="text"
+                   required
+                   class="form-control"
+                   formControlName="description"
+                   placeholder="Descripción">
+          </div>
+
+          <div class="form-group">
+            <label>Monto</label>
+            <input type="number"
+                   formControlName="amount"
+                   class="form-control"
+                   placeholder="Monto">
+            <p>
+              Debe de ser un monto positivo
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label>Tipo</label>
+            <br>
+            <select
+              formControlName="type"
+              required
+              class="form-control" id="exampleFormControlSelect1">
+              <option [value]="its" *ngFor="let its of type">{{its}}</option>
+            </select>
+          </div>
+
+          <hr>
+
+
+          <button *ngIf="isLoading else notLoad" disabled class="btn btn-success mr-2">
+            <i class="fa fa-spin fa-sync"></i>
+            Espere por favor...
+          </button>
+
+          <ng-template #notLoad>
+            <button type="submit" [disabled]="!form.valid" class="btn btn-success mr-2">
+              <i class="fa fa-save"></i>
+              Agregar
+            </button>
+
+            <button type="reset" (click)="form.reset()" class="btn btn-light">Cancelar</button>
+          </ng-template>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Detalle de ingreso egreso</h4>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Descripción</th>
+              <th>Monto</th>
+              <th class="text-center" >Tipo</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of items | orderAdmin">
+              <td>{{item.description}}</td>
+              <td>{{item.amount | currency}}</td>
+              <td class="text-center"  [class.text-danger]="item.type=== typeIngresoEgreso.EGRESO" [class.text-success]="item.type=== typeIngresoEgreso.INGRESO">{{item.type}}</td>
+              <td width="80px">
+                <button (click)="delete(item)" class="btn btn-danger">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+

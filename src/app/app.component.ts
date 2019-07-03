@@ -1,10 +1,18 @@
-import { Component } from '@angular/core';
+import {Component, Injector} from '@angular/core';
+import {AuthService} from './auth/auth.service';
 
 @Component({
   selector: 'admin-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: `
+    <div class="container-scroller">
+      <router-outlet></router-outlet>
+    </div>`
 })
 export class AppComponent {
-  title = 'administrator';
+
+  authService = this.injector.get(AuthService);
+
+  constructor(protected injector: Injector) {
+    this.authService.initAuthListener();
+  }
 }
